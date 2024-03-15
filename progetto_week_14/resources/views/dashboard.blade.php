@@ -14,4 +14,7 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+    @vite(['resources/js/closeAlertBox.js'])
+  @endpush
 </x-app-layout>

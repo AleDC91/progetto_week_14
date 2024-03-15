@@ -1,0 +1,37 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\User;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+
+class UserSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        User::factory(19)->create();
+
+
+        // creo un admin di default con 
+        // email:  admin@example.com
+        // e password: Admin1234!
+        User::factory()->create([
+            'name' => 'admin',
+            'email' => 'admin@example.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('Admin1234!'),
+            'remember_token' => Str::random(10),
+            'role' => 'admin',
+            'profile_image' => "https://picsum.photos/id/". rand(1, 999) ."/200/200",
+            'phone_number' => fake()->phoneNumber(),
+            'bio' => fake()->text()
+        ]);
+    }
+}
