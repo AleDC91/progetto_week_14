@@ -87,7 +87,7 @@ class ProjectController extends Controller
 
                 DB::commit();
 
-                return redirect()->route('projects.show', ['project' => $project->id])->with('success', 'Nuovo progetto creato con successo!');
+                return redirect()->route('projects.show', ['project' => $project->id])->with('success', 'New project created! Remember to fill assign tasks and add info to tje activities"');
             
             } catch (\Exception $e) {
                 

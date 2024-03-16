@@ -1,4 +1,4 @@
-<div class="flex content-between items-center flex-col px-4 pb-3 bg-white hover:bg-slate-300 leading-tight transition-all rounded-lg border-b-2 mb-2 shadow-lg w-full">
+<div class="flex content-between flex-col px-4 pb-3 bg-white hover:bg-slate-300 leading-tight transition-all rounded-lg border-b-2 mb-2 shadow-lg w-full">
     <a role="button" href="{{ route('projects.show', ['project' => $activity->project]) }}"
         class="">
 
