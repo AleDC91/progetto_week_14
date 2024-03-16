@@ -6,7 +6,7 @@
                 class="bg-green-700 ms-5 py-2 px-3 mb-5 rounded-lg text-lg text-slate-200 hover:bg-green-400 hover:text-slate-700">NEW</a>
         </div>
         <div class="flex items-center justify-between ">
-            <form class="flex bg-gray-50 items-center p-2 rounded-md bg-slate-200">
+            <form class="flex items-center p-2 rounded-md bg-slate-200">
 
                 <input class="bg-gray-50 outline-none ml-1 block " type="text" name="" id=""
                     placeholder="search user...">
@@ -76,14 +76,18 @@
                                     <p class="text-gray-900 whitespace-no-wrap">{{ ucfirst($user->role) }}</p>
                                 </td>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-base">
-                                    <a href="mailto:{{$user->email}}"><p class="text-gray-900 whitespace-no-wrap">
-                                        {{ $user->email }}
-                                    </p></a>
+                                    <a href="mailto:{{ $user->email }}">
+                                        <p class="text-gray-900 whitespace-no-wrap">
+                                            {{ $user->email }}
+                                        </p>
+                                    </a>
                                 </td>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-base">
-                                    <a href="tel:{{$user->phone_number}}"><p class="text-gray-900 whitespace-no-wrap">
-                                        {{ $user->phone_number }}
-                                    </p></a>
+                                    <a href="tel:{{ $user->phone_number }}">
+                                        <p class="text-gray-900 whitespace-no-wrap">
+                                            {{ $user->phone_number }}
+                                        </p>
+                                    </a>
                                 </td>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-base">
                                     @php
@@ -108,12 +112,7 @@
                                 </td>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-lg">
                                     @php
-                                        $ownerCounter = 0;
-                                        foreach ($user->activities as $activity) {
-                                            if ($activity->project->owner_id === $user->id) {
-                                                $ownerCounter++;
-                                            }
-                                        }
+                                        $ownerCounter = $user->projects->count();
                                     @endphp
                                     <div class="owned-number ">
                                         <x-owned-admin-user-table :ownerCounter="$ownerCounter" />
@@ -129,11 +128,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                <span id="{{ 'tooltip-default-' . $user->id }}" role="tooltip"
-                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                    Tooltip content
-                    <div class="tooltip-arrow" data-popper-arrow></div>
-                </span>
+
             </div>
         </div>
     </div>
