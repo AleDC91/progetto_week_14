@@ -7,6 +7,6 @@
     </svg>
     <span class="sr-only">Info</span>
     <div>
-        <span class="font-medium">Success!</span>{{ $slot }}
+        <span class="font-medium">Success! </span>{{ $slot }}
     </div>
 </div>

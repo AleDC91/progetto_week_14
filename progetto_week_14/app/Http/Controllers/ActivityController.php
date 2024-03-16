@@ -45,7 +45,7 @@ class ActivityController extends Controller
      */
     public function edit(Activity $activity)
     {
-        //
+        return 'ciao';
     }
 
     /**

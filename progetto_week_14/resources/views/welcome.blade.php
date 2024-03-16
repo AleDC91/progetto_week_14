@@ -864,7 +864,7 @@
             display: flex;
             align-items: start;
             flex-direction: column;
-
+            width: 40%;
         }
 
         .jumbo-inner-inner h2 {
@@ -873,14 +873,17 @@
             line-height: 2.5rem;
             font-weight: 600;
             margin: 1rem;
+            text-align: left;
         }
 
         .jumbo-inner-inner h4 {
             margin-bottom: 1.5rem;
-            font-size: 2rem;
-            line-height: 1.75rem;
+            font-size: 1.5rem;
+            line-height: 1.9rem;
             font-weight: 600;
             margin: 1rem;
+            text-align: left;
+
         }
 
         #btn-jumbo-login,
@@ -894,12 +897,12 @@
             display: flex;
             align-items: center;
             flex-direction: row;
+            width: 100%;
         }
 
         @media screen and (max-width: 576px) {
 
             #jumbo-btns {
-
                 flex-direction: column;
             }
 
@@ -907,8 +910,13 @@
 
         @media screen and (max-width: 768px) {
             .jumbo-inner-inner {
-                margin-top: 50%
+                margin-top: 20%;
             }
+
+            .jumbo-inner-inner div {
+                justify-content: center;
+            }
+
             .jumbo-inner-inner div:first-child {
                 width: 100%;
                 text-align: center;
