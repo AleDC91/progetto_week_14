@@ -61,7 +61,7 @@
         {{-- @if (Route::currentRouteName() === 'projects.show')  --}}
 
     </a>
-    @if (Route::currentRouteName() === 'projects.show')'
+    @if (Route::currentRouteName() === 'projects.show')
     <div class="text-right w-full">
 
     <x-footer-activity :activity="$activity"/>

@@ -11,7 +11,7 @@
             <div class="projects-section me-5 flex flex-col md:flex-row">
                 <div class="my-projects-box mb-10 md:me-4  w-full">
                     <h2 class="text-3xl mb-4">{{$project->name}}</h2>
-                    <x-single-project :project="$project" />
+                    <x-single-project :project="$project" :usersWorking="$usersWorking" />
                 </div>
                 <div class="working-on-projects  w-full">
                     <h2 class="text-3xl mb-4">Activities</h2>

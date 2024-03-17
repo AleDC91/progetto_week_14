@@ -1,7 +1,7 @@
 @if ($user->projects->count() === 0)
     <div class="relative flex flex-col text-gray-700 bg-white shadow-md w-96 rounded-xl bg-clip-border">
         <nav class="flex min-w-[240px] flex-col gap-1 p-4 font-sans text-base font-normal text-blue-gray-700 italic">
-            You're not working on any project yet.
+            Create your first project!
         </nav>
     </div>
 @else

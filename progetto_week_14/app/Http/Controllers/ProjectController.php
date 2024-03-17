@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Activity;
 use App\Models\Project;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Return_;
@@ -37,7 +38,7 @@ class ProjectController extends Controller
 
         $this->authorize('viewAny', Project::class);
         //non vorrei mai che venisse salvato il progetto senza le relative attività, visto che sono più processi separati!
-        DB::beginTransaction(); 
+        DB::beginTransaction();
 
         $userId = Auth::user()->id;
         $validatedData = $request->validate([
@@ -59,11 +60,11 @@ class ProjectController extends Controller
             // in questo caso va bene perchè sono tutti dati dello stesso tipo
             'activity_name.*' => 'required|string|max:255'
         ]);
-        
+
         if ($validatedData) {
             try {
                 $project = new Project();
-                
+
                 $project->name = $validatedData['project_name'];
                 $project->description = $validatedData['project_description'];
                 $project->owner_id = $validatedData['project_owner_id'];
@@ -73,7 +74,7 @@ class ProjectController extends Controller
                 $project->priority = $validatedData['project_priority'];
 
                 $project->save();
-                
+
 
 
                 foreach ($request->activity_name as $activityName) {
@@ -88,15 +89,13 @@ class ProjectController extends Controller
                 DB::commit();
 
                 return redirect()->route('projects.show', ['project' => $project->id])->with('success', 'New project created! Remember to fill assign tasks and add info to tje activities"');
-            
             } catch (\Exception $e) {
-                
+
                 DB::rollBack();
                 return redirect()->back()->with('error', "Si è verificato un errore durante la creazione del Progetto");
             }
-
         } else {
-            
+
             return redirect()->back()->with('error', "Dati inseriti non validi");
         }
     }
@@ -106,11 +105,34 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        $this->authorize('view', $project);
-        $users = User::all();
-        return view('projects.show', ['project' => $project, 'users' => $users]);
-    }
+        try{
+            $this->authorize('view', $project);
+             return view('projects.show', [
+                'project' => $project,
+                'users' => User::all(),
+                'usersWorking' => $this->getUsersWorking($project)
+            ]);
+        } catch(\Exception $e){
+            if($e instanceof AuthorizationException){
+                return redirect()->back()->with('error', "You are not allowed to view this project!");
 
+            }    
+        }
+
+    }
+    
+    private function getUsersWorking(Project $project)
+    {
+        $usersWorking = [];
+        foreach ($project->activities as $activity) {
+            foreach ($activity->users as $user) {
+                if (!in_array($user, $usersWorking)) {
+                    $usersWorking[] = $user;
+                }
+            }
+        }
+        return $usersWorking;
+    }
     /**
      * Show the form for editing the specified resource.
      */

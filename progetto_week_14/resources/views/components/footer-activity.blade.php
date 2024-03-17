@@ -5,8 +5,7 @@
         <a href="/activities/{{$activity->id}}/edit">edit</a>
     </div>
     <div>
-        <form action="/activities/{{$activity->id}}" method="post">
-            @csrf
+        <form action="{{ route('activities.destroy', ['activity' => $activity]) }}" method="post">            @csrf
             @method('delete')
             <button type="submit">
             <i class="fa-regular fa-trash-can"></i> 

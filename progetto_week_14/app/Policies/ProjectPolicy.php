@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\ActivityUser;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -21,10 +22,20 @@ class ProjectPolicy
      */
     public function view(User $user, Project $project): bool
     {
-        if ($user->isAdmin() || $user->id === $project->owner_id) {
-            return true;
+        $isUserPartOfProject = false;
+        foreach ($project->activities as $activity) {
+            if (ActivityUser::where(['user_id'=> $user->id, 'activity_id'=> $activity->id])->get()->count() > 0){
+                $isUserPartOfProject = true;
+                break;
+            }
         }
-        abort(403, "you're not allowed to view this project");
+        
+        if ($user->isAdmin() || $user->id === $project->owner_id || $isUserPartOfProject) {
+            return true;
+        } else {
+            return false;
+        }
+        // abort(403, "you're not allowed to view this project");
     }
 
     /**
@@ -43,7 +54,7 @@ class ProjectPolicy
         if ($user->id === $project->owner_id) {
             return true;
         }
-        abort(403, "You can modify only your Projects!");
+        // abort(403, "You can modify only your Projects!");
     }
 
     /**
@@ -54,7 +65,7 @@ class ProjectPolicy
         if ($user->id === $project->owner_id) {
             return true;
         }
-        abort(403, "You can delete only your Projects!");
+        // abort(403, "You can delete only your Projects!");
     }
 
     /**

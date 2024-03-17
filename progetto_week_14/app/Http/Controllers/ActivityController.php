@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreActivityRequest;
 use App\Http\Requests\UpdateActivityRequest;
 use App\Models\Activity;
+use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class ActivityController extends Controller
 {
@@ -61,6 +63,19 @@ class ActivityController extends Controller
      */
     public function destroy(Activity $activity)
     {
-        //
+        // if (!$this->authorize('delete', $activity)) {
+        //     return redirect()->back()->with('error', "You are not allowed to delete this activity!");
+        // }
+    
+        try {
+            $this->authorize('delete', $activity);
+            $activity->delete();
+            return redirect()->back()->with('success', "Activity deleted successfully!");
+        } catch (\Exception $e) {
+            if($e instanceof AuthorizationException){
+            return redirect()->back()->with('error', "You're not allowed to delete this project!.");
+            }
+            return redirect()->back()->with('error', "Error while deleting Activity.");
+        }
     }
 }

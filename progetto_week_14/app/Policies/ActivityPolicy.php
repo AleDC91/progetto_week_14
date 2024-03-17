@@ -43,9 +43,12 @@ class ActivityPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Activity $activity): bool
+    public function delete(User $user, Activity $activity)
     {
-        //
+        if($user->isAdmin() || $activity->project->owner_id === $user->id){
+            return true;
+        } 
+       return false;
     }
 
     /**

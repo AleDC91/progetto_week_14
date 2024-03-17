@@ -9,7 +9,11 @@
         <div class="left-dashboard flex flex-col w-full">
             <div class="projects-section me-5 flex flex-col md:flex-row">
                 <div class="my-projects-box mb-10 md:me-4">
-                    <h2 class="text-3xl mb-4">Your Projects</h2>
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-3xl mb-4">Your Projects</h2>
+                        <a type="button" href="{{route("projects.create")}}" class="bg-green-700 ms-5 py-2 px-3 mb-5 rounded-lg text-base text-slate-200 hover:bg-green-400 hover:text-slate-700 me-2">NEW</a>
+
+                    </div>
                     <x-owned-projects :user="$user" />
                 </div>
                 <div class="working-on-projects">
