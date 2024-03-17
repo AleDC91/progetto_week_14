@@ -21,7 +21,7 @@ class ActivityUserController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**

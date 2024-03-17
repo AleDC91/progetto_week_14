@@ -2,24 +2,24 @@
 
 namespace App\View\Components;
 
-use App\Models\Project;
+use App\Models\Activity;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
 
-class SingleProject extends Component
+class FormUpdateActivity extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(public Project $project, public array | Collection $usersWorking){}
+    public function __construct(public Activity $activity, public Collection $users){}
 
     /**
      * Get the view / contents that represent the component.
      */
     public function render(): View|Closure|string
     {
-        return view('components.single-project');
+        return view('components.form-update-activity');
     }
 }

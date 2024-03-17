@@ -44,6 +44,8 @@
                 {{ $excerpt($activity->description, 100) }}
             @endif
         </div>
+        <h5 class="pt-2"><span class="text-base font-medium ">Project: </span><span class="text-sm ms-2 font-semibold italic">{{$activity->project->name}}</span></h5>
+
         <div>
             <h5 class="pt-2"><span class="text-xs font-bold ">DEADLINE: </span><span class="text-sm ms-2 font-semibold italic">{{$activity->end_date ? $activity->end_date : "No deadline given"}}</span></h5>
         </div>

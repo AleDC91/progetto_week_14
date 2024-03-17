@@ -36,7 +36,6 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
 
-        $this->authorize('viewAny', Project::class);
         //non vorrei mai che venisse salvato il progetto senza le relative attività, visto che sono più processi separati!
         DB::beginTransaction();
 
@@ -88,7 +87,7 @@ class ProjectController extends Controller
 
                 DB::commit();
 
-                return redirect()->route('projects.show', ['project' => $project->id])->with('success', 'New project created! Remember to fill assign tasks and add info to tje activities"');
+                return redirect()->route('projects.show', ['project' => $project->id])->with('success', 'New project created! Remember to assign tasks and add activities info');
             } catch (\Exception $e) {
 
                 DB::rollBack();
@@ -154,6 +153,16 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        try{
+            $this->authorize('delete', $project);
+                $project->delete();
+                return redirect('dashboard')->with('success', "Project $project->name deleted successfully!");
+        } catch(\Exception $e){
+            if($e instanceof AuthorizationException){
+                return redirect()->back()->with('error', "You are not allowed to delete this project!");
+            } else {
+                return redirect()->back()->with('error', "An error occurred while deleting this project");
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Activity;
+use App\Models\Project;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -27,9 +28,13 @@ class ActivityPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Project $project): bool
     {
-        //
+        if ($user->isAdmin() || $user->id === $project->owner_id) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -37,7 +42,10 @@ class ActivityPolicy
      */
     public function update(User $user, Activity $activity): bool
     {
-        //
+        if($user->isAdmin() || $activity->project->owner_id === $user->id){
+            return true;
+        } 
+       return false;
     }
 
     /**

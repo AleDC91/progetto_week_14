@@ -7,10 +7,11 @@
 @tailwind utilities;
 
 .msg-box {
-    width: 50%;
+    width: 100%;
     margin: 0 auto;
     text-align: center;
     margin-top: 32px;
+    top: 90px
 }
 
 @media screen and (max-width: 576px) {

@@ -41,9 +41,13 @@ class ProjectPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Project $project): bool
     {
-        //
+        if ($user->isAdmin() || $user->id === $project->owner_id) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -53,6 +57,8 @@ class ProjectPolicy
     {
         if ($user->id === $project->owner_id) {
             return true;
+        } else {
+            return false;
         }
         // abort(403, "You can modify only your Projects!");
     }
@@ -64,6 +70,8 @@ class ProjectPolicy
     {
         if ($user->id === $project->owner_id) {
             return true;
+        } else {
+            return false;
         }
         // abort(403, "You can delete only your Projects!");
     }
