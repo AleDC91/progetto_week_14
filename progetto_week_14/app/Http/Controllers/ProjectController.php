@@ -74,8 +74,6 @@ class ProjectController extends Controller
 
                 $project->save();
 
-
-
                 foreach ($request->activity_name as $activityName) {
                     $newActivity = new Activity();
 
@@ -104,40 +102,47 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        try{
+        try {
             $this->authorize('view', $project);
-             return view('projects.show', [
+            return view('projects.show', [
                 'project' => $project,
                 'users' => User::all(),
                 'usersWorking' => $this->getUsersWorking($project)
             ]);
-        } catch(\Exception $e){
-            if($e instanceof AuthorizationException){
+        } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
                 return redirect()->back()->with('error', "You are not allowed to view this project!");
-
-            }    
+            }
         }
-
     }
-    
+
     private function getUsersWorking(Project $project)
     {
         $usersWorking = [];
         foreach ($project->activities as $activity) {
             foreach ($activity->users as $user) {
-                if (!in_array($user, $usersWorking)) {
-                    $usersWorking[] = $user;
-                }
+                $usersWorking[$user->id] = $user;
             }
         }
-        return $usersWorking;
+        return array_values($usersWorking);
     }
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Project $project)
     {
-        //
+        try {
+            $this->authorize('update', $project);
+            return view('projects.edit', ['project' => $project]);
+        } catch (\Exception $e) {
+
+            if ($e instanceof AuthorizationException) {
+                return redirect()->back()->with('error', "You're not allowed to update this project!.");
+            } else {
+
+                return redirect()->back()->with('error', "Error while updating project: " . $e->getMessage());
+            }
+        }
     }
 
     /**
@@ -145,7 +150,54 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        try {
+            $this->authorize('update', $project);
+
+            DB::beginTransaction();
+
+            $userId = Auth::user()->id;
+            $validatedData = $request->validate([
+                'project_owner_id' => [
+                    'required',
+                    function ($attribute, $value, $fail) use ($userId) {
+                        if ($value != $userId) {
+                            $fail("Il proprietario del progetto non corrisponde all'utente autenticato.");
+                        }
+                    },
+                ],
+                'project_name' => 'required|string|max:255',
+                'project_description' => 'string',
+                'project_start_date' => "required|date",
+                'project_end_date' => 'nullable|date|after:project_start_date',
+                'project_client' => 'string|max:255',
+                'project_priority' => 'required|string|in:low,medium,high',
+            ]);
+
+
+            $project->update([
+                'name' => $validatedData['project_name'],
+                'description' => $validatedData['project_description'],
+                'start_date' => $validatedData['project_start_date'],
+                'end_date' => $validatedData['project_end_date'],
+                'client_name' => $validatedData['project_client'],
+                'priority' => $validatedData['project_priority'],
+                'owner_id' => $validatedData['project_owner_id']
+            ]);
+
+
+            DB::commit();
+
+            return redirect(route('projects.show', ['project' => $project]))->with(['project' => $project, 'usersWorking' => $project->users, 'users' => User::all()])->with('success', 'Activity updated successfully.');
+        } catch (\Exception $e) {
+
+            if ($e instanceof AuthorizationException) {
+                return redirect()->back()->with('error', "You're not allowed to update this project!.");
+            } else {
+
+                return redirect()->back()->with('error', "Error while updating project: " . $e->getMessage());
+                // dd($e);
+            }
+        }
     }
 
     /**
@@ -153,12 +205,12 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        try{
+        try {
             $this->authorize('delete', $project);
-                $project->delete();
-                return redirect('dashboard')->with('success', "Project $project->name deleted successfully!");
-        } catch(\Exception $e){
-            if($e instanceof AuthorizationException){
+            $project->delete();
+            return redirect('dashboard')->with('success', "Project $project->name deleted successfully!");
+        } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
                 return redirect()->back()->with('error', "You are not allowed to delete this project!");
             } else {
                 return redirect()->back()->with('error', "An error occurred while deleting this project");

@@ -49,7 +49,6 @@ class ActivityController extends Controller
         try {
 
             $this->authorize('create', [Activity::class, $project]);
-            // dd($request);
             DB::beginTransaction();
 
             $validatedData = $request->validate([
@@ -75,8 +74,8 @@ class ActivityController extends Controller
             $activity->estimated_hours = $validatedData['activity_hours'];
             $activity->status = $validatedData['activity_status'];
             $activity->project_id = $project->id;
-            $activity->save();
 
+            $activity->save();
 
             $selectedUsersData = json_decode($validatedData['selected-users-data'], true);
             $userIds = array_column($selectedUsersData, 'id');
@@ -84,9 +83,12 @@ class ActivityController extends Controller
             DB::commit();
 
             return redirect(route('projects.show', ['project' => $activity->project]))->with(['project' => $activity->project, 'usersWorking' => $activity->users, 'users' => User::all()])->with('success', 'New activity added successfully.');
+        
         } catch (\Exception $e) {
+
             if ($e instanceof AuthorizationException) {
                 return redirect()->back()->with('error', "You're not allowed to create activities!");
+           
             } else {
                 return redirect()->back()->with('error', "Error while creating Activity: " . $e->getMessage());
                 // dd($e);
@@ -158,14 +160,20 @@ class ActivityController extends Controller
 
             $selectedUsersData = json_decode($validatedData['selected-users-data'], true);
             $userIds = array_column($selectedUsersData, 'id');
+
             $activity->users()->sync($userIds);
+
             DB::commit();
 
             return redirect(route('projects.show', ['project' => $activity->project]))->with(['project' => $activity->project, 'usersWorking' => $activity->users, 'users' => User::all()])->with('success', 'Activity updated successfully.');
+        
         } catch (\Exception $e) {
+
             if ($e instanceof AuthorizationException) {
                 return redirect()->back()->with('error', "You're not allowed to update this activity!.");
+           
             } else {
+
                 return redirect()->back()->with('error', "Error while updating Activity: " . $e->getMessage());
                 // dd($e);
             }
@@ -176,18 +184,18 @@ class ActivityController extends Controller
      */
     public function destroy(Activity $activity)
     {
-        // if (!$this->authorize('delete', $activity)) {
-        //     return redirect()->back()->with('error', "You are not allowed to delete this activity!");
-        // }
-
         try {
             $this->authorize('delete', $activity);
+
             $activity->delete();
             return redirect()->back()->with('success', "Activity deleted successfully!");
+        
         } catch (\Exception $e) {
+
             if ($e instanceof AuthorizationException) {
-                return redirect()->back()->with('error', "You're not allowed to delete this activity!.");
+                return redirect()->back()->with('error', "You're not allowed to delete this activity!");
             }
+            
             return redirect()->back()->with('error', "Error while deleting Activity.");
         }
     }

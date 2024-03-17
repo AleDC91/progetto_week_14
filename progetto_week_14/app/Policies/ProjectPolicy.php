@@ -6,6 +6,7 @@ use App\Models\ActivityUser;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectPolicy
 {
@@ -55,7 +56,7 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project): bool
     {
-        if ($user->id === $project->owner_id) {
+        if ($user->isAdmin() || $user->id === $project->owner_id) {
             return true;
         } else {
             return false;
@@ -68,7 +69,7 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project): bool
     {
-        if ($user->id === $project->owner_id) {
+        if ($user->isAdmin() || $user->id === $project->owner_id) {
             return true;
         } else {
             return false;

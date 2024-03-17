@@ -57,7 +57,7 @@
                         <div class="flex items-center my-2 py-2 mb-0 pb-0 border-t-2">
                             <div class="grid mr-4 place-items-center">
                                 <img alt="{{ $project->owner->name }}" src="{{ $project->owner->profile_image }}"
-                                    class="relative inline-block h-8 w-8 !rounded-full  object-cover object-center" />
+                                    class="relative inline-block h-8 w-8 !rounded-full  object-cover object-center overflow-hidden" />
                             </div>
                             <h6
                                 class="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-blue-gray-900">

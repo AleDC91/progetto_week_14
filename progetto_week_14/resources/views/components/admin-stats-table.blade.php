@@ -4,5 +4,12 @@
             <span class="text-4xl pb-4 mb-2">Statistics</span>
         </div>
     </div>
-    <x-activity-users-ratio-graph :users="$users" :projects="$projects"/>
+    <div class="flex">
+        <x-activity-users-ratio-graph :users="$users" :projects="$projects"/>
+        <div class="ms-8">
+            <p class="text-2xl">Total Projects: {{$projects->count()}} <p>
+            <p class="text-2xl">Total Users: {{$users->count()}} <p>
+            <p class="text-4xl"> Add other more interesting stats!</p>
+        </div>
+    </div>
 </div>
