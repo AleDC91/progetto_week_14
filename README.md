@@ -14,7 +14,7 @@
 
 Per l'autenticazione è stato usato laravel breeze.
 
-Ci sono 19 utenti standars e 
+Ci sono 19 utenti standard e 
 un Admin, con 
 email: admin@example.com
 password: Admin@1234!
