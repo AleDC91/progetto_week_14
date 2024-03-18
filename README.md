@@ -1,18 +1,16 @@
 Semplice App per l'organizzazione dei progetti e delle relative attività.
 
-IMPORTANTE: per far funzionare il tutto:
-settare i parametri del DB sul file .env, poi
-<code>npm install</code> per le dipendenze
-<code>npm run dev</code>
-prima di 
-<code>php artisan serve</code>
+# IMPORTANTE: per far funzionare il tutto:
 
-poichè è necessario caricare gli script js tramite Vite.js
-
-I dati iniziali vengono generati in automatico sfruttando seeders e factories.
-<code>php artisan migrate </code>
-e
-<code>php artisan db:seed </code>
+- <code>composer install</code> : installa dipendenze composer
+- <code>cp .env.example .env</code> : inserisci i dati del tuo db
+- <code>php artisan key:generate</code> : genera key dell'appp
+- <code>php artisan migrate</code> : fai le migrazione
+- <code>php artisan db:seed</code> : riemi il database con i valori generati dai seeders tramite factory
+- <code>npm install</code> : dipendenze necessarie node
+- <code>npm run dev</code> : serve per Vite
+- <code>php artisan serve</code> : fai partire il server
+  
 
 Per l'autenticazione è stato usato laravel breeze.
 
