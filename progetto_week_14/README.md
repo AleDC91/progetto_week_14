@@ -2,9 +2,9 @@ Semplice App per l'organizzazione dei progetti e delle relative attività.
 
 IMPORTANTE: per far funzionare il tutto:
 settare i parametri del DB sul file .env, poi
-<code>npm run dev<code>
+<code>npm run dev</code>
 prima di 
-<code>php artisan serve<code>
+<code>php artisan serve</code>
 
 poichè è necessario caricare gli script js tramite Vite.js
 
