@@ -2,7 +2,7 @@
 
 ## IMPORTANTE: per far funzionare il tutto:
 
-- <code>composer install</code> : installa dipendenze composer
+- ``composer install`` : installa dipendenze composer
 - <code>cp .env.example .env</code> : inserisci i dati del tuo db nel file .env appena creato
 - <code>php artisan key:generate</code> : genera key dell'app
 - <code>php artisan migrate</code> : fai le migrazioni
