@@ -33,5 +33,17 @@ class UserSeeder extends Seeder
             'phone_number' => fake()->phoneNumber(),
             'bio' => fake()->text()
         ]);
+
+        User::factory()->create([
+            'name' => 'Mario Rossi',
+            'email' => 'm.rossi@example.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('Pa$$w0rd!'),
+            'remember_token' => Str::random(10),
+            'role' => 'user',
+            'profile_image' => "https://picsum.photos/id/". rand(1, 999) ."/200/200",
+            'phone_number' => fake()->phoneNumber(),
+            'bio' => fake()->text()
+        ]);
     }
 }
