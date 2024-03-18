@@ -1,6 +1,6 @@
-Semplice App per l'organizzazione dei progetti e delle relative attività.
+# Semplice App per l'organizzazione dei progetti e delle relative attività.
 
-# IMPORTANTE: per far funzionare il tutto:
+## IMPORTANTE: per far funzionare il tutto:
 
 - <code>composer install</code> : installa dipendenze composer
 - <code>cp .env.example .env</code> : inserisci i dati del tuo db
